@@ -28,7 +28,7 @@ for percentage in percentages:
         banks.append([i, fake.company(), country])
 
     # Salvataggio delle banche in CSV
-    with open(fr'{absolute_path}dataset/{percentage}%dataset_banks{percentage}%.csv', 'w', newline='') as file:
+    with open(fr'{absolute_path}dataset/{percentage}%/dataset_banks{percentage}%.csv', 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(['bank_id', 'name', 'country'])
         writer.writerows(banks)
@@ -41,7 +41,7 @@ for percentage in percentages:
         users.append([i, fake.name(), fake.email(), fake.date_of_birth(minimum_age=18, maximum_age=85), card_id, bank_id])
 
     # Salvataggio degli utenti in CSV
-    with open(fr'{absolute_path}dataset/{percentage}%dataset_users{percentage}%.csv', 'w', newline='') as file:
+    with open(fr'{absolute_path}dataset/{percentage}%/dataset_users{percentage}%.csv', 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(['user_id', 'name', 'email', 'birth_date', 'card_id', 'bank_id'])
         writer.writerows(users)
@@ -59,7 +59,7 @@ for percentage in percentages:
         transactions.append([i, sender_card_id, receiver_bank_id, amount, timestamp])
 
     # Salvataggio delle transazioni in CSV
-    with open(fr'{absolute_path}dataset/{percentage}%dataset_transactions{percentage}%.csv', 'w', newline='') as file:
+    with open(fr'{absolute_path}dataset/{percentage}%/dataset_transactions{percentage}%.csv', 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(['transaction_id', 'sender_card_id', 'receiver_bank_id', 'amount', 'timestamp'])
         writer.writerows(transactions)

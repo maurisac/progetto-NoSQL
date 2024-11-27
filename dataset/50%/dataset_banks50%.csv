@@ -1,0 +1,251 @@
+bank_id,name,country
+1,"Arnold, Mejia and Brown",Filippine
+2,Lewis LLC,Italia
+3,Olsen Group,Australia
+4,Martinez and Sons,Australia
+5,Oneal LLC,Afghanistan
+6,"Bauer, Baldwin and Roth",Marocco
+7,"Farley, Perez and Schmidt",Canada
+8,Hamilton-Sullivan,Marocco
+9,Contreras PLC,Filippine
+10,Martinez-Williams,Filippine
+11,Wood-Trevino,Marocco
+12,"Fernandez, Alexander and Myers",Australia
+13,"Miller, Hubbard and Coleman",Filippine
+14,Wallace-Miller,Canada
+15,"Smith, Mathews and Bridges",Italia
+16,Berry and Sons,Marocco
+17,"Martin, Torres and Dodson",Canada
+18,Ellison-Rogers,Marocco
+19,Reid-Smith,Australia
+20,Page PLC,Afghanistan
+21,"Murphy, Gallagher and Brooks",Australia
+22,Scott-Jennings,Australia
+23,Schultz LLC,Canada
+24,Wilson Ltd,Australia
+25,"Mcdonald, Tanner and Anderson",Italia
+26,Bolton and Sons,Afghanistan
+27,Stephens and Sons,Marocco
+28,"Walker, Jones and Weaver",Filippine
+29,"Chapman, Walters and Jones",Marocco
+30,Myers-Reyes,Filippine
+31,"Ramirez, Ballard and Jones",Australia
+32,Saunders Inc,Canada
+33,"Leon, Mitchell and Logan",Italia
+34,West Ltd,Canada
+35,Brown-Warren,Filippine
+36,Cardenas and Sons,Afghanistan
+37,"Curtis, Winters and Espinoza",Afghanistan
+38,Underwood-Cervantes,Australia
+39,Duran-Nolan,Australia
+40,"Wolfe, Perez and Carter",Italia
+41,Dennis-Lopez,Italia
+42,Morris-Washington,Afghanistan
+43,Craig and Sons,Italia
+44,Johnson LLC,Italia
+45,"Castro, Little and Davis",Canada
+46,Burke and Sons,Canada
+47,Davenport and Sons,Marocco
+48,Austin Inc,Italia
+49,Watts-Adams,Marocco
+50,Barron-Williamson,Marocco
+51,Wells-Strong,Afghanistan
+52,Bryant-Wells,Canada
+53,Bailey-Horton,Filippine
+54,Mcfarland PLC,Australia
+55,"Alvarez, Howard and Collins",Filippine
+56,Rogers PLC,Marocco
+57,Spencer PLC,Filippine
+58,Randall-Holmes,Marocco
+59,Mason Group,Afghanistan
+60,Frank-Jackson,Canada
+61,Hart-Winters,Filippine
+62,Burns PLC,Afghanistan
+63,Stone and Sons,Italia
+64,"Cobb, Rogers and Lopez",Canada
+65,Palmer and Sons,Australia
+66,Garcia LLC,Afghanistan
+67,Weiss-Morris,Canada
+68,Guerrero-Richard,Marocco
+69,Sanchez-Black,Italia
+70,Lee-Green,Australia
+71,Moran-Jennings,Italia
+72,Delgado Group,Marocco
+73,Dixon-Garcia,Australia
+74,Hopkins-Floyd,Filippine
+75,Russell Ltd,Canada
+76,Cohen PLC,Afghanistan
+77,"Gordon, Smith and Walker",Afghanistan
+78,Garcia Inc,Marocco
+79,"Edwards, Ramirez and Hatfield",Italia
+80,Martin-Matthews,Australia
+81,Smith-Camacho,Filippine
+82,"Watson, Rosario and Singh",Afghanistan
+83,"Davis, Marquez and Stevenson",Marocco
+84,"Harper, Huffman and Quinn",Italia
+85,Miranda-Olson,Canada
+86,Gross PLC,Italia
+87,Collins-Burns,Marocco
+88,Walker-Weeks,Italia
+89,Lewis-Tanner,Filippine
+90,Mcclure LLC,Filippine
+91,Wilson-Osborne,Marocco
+92,Christensen Inc,Afghanistan
+93,"Navarro, Page and Flores",Marocco
+94,"Rubio, Lee and Salas",Italia
+95,Glover-Fernandez,Italia
+96,Logan-Moore,Italia
+97,Watts LLC,Australia
+98,Carter PLC,Afghanistan
+99,Reyes Group,Marocco
+100,Hanson-Blackwell,Afghanistan
+101,Freeman Ltd,Australia
+102,Carlson Ltd,Marocco
+103,"Torres, Hutchinson and Johnson",Marocco
+104,Smith-Gonzales,Australia
+105,Smith-Wolfe,Filippine
+106,Rodriguez Ltd,Italia
+107,Price and Sons,Marocco
+108,Garza-George,Australia
+109,"Smith, Dunn and Ortega",Marocco
+110,"Norris, Mcdonald and Anderson",Marocco
+111,Robinson-Morales,Afghanistan
+112,Atkinson-Porter,Australia
+113,Conner Group,Filippine
+114,"Barrett, Lewis and Aguilar",Marocco
+115,Wells-Wilson,Afghanistan
+116,"Russell, Moore and Jones",Marocco
+117,Smith PLC,Afghanistan
+118,Cortez PLC,Afghanistan
+119,"Thomas, Douglas and Johnson",Marocco
+120,Bailey-Johnson,Australia
+121,Chambers LLC,Italia
+122,Brooks-Rodgers,Australia
+123,Vargas-Olson,Italia
+124,Roberts Ltd,Filippine
+125,Hart-Pena,Italia
+126,Garcia Group,Italia
+127,Willis LLC,Australia
+128,"Elliott, Montgomery and Saunders",Australia
+129,Moore Ltd,Marocco
+130,"Maldonado, Carroll and Lee",Italia
+131,Garza LLC,Afghanistan
+132,Fernandez Group,Australia
+133,Goodman-Ortiz,Italia
+134,King-Garcia,Afghanistan
+135,Chen-Mcdonald,Australia
+136,Fischer-Snyder,Filippine
+137,Meyer LLC,Canada
+138,Knight Group,Italia
+139,Jones-Leonard,Afghanistan
+140,Johnson-Ward,Italia
+141,Fuller-Bright,Canada
+142,Hill Inc,Italia
+143,Summers-Rodriguez,Canada
+144,Chavez Group,Filippine
+145,Miles-Salinas,Canada
+146,Nelson-Henson,Canada
+147,"Hansen, Nelson and Ward",Canada
+148,"Matthews, Wilson and Mills",Afghanistan
+149,"Logan, White and Harrison",Italia
+150,Copeland-Stone,Marocco
+151,Franklin-Rogers,Italia
+152,Lozano LLC,Italia
+153,Russell-Washington,Italia
+154,Lang PLC,Australia
+155,"Wilson, Davis and Williams",Marocco
+156,"Willis, Erickson and Johnson",Marocco
+157,Torres-Fuentes,Australia
+158,Larsen LLC,Australia
+159,"Pierce, Ford and Perez",Australia
+160,Silva-Dunn,Afghanistan
+161,Meadows LLC,Canada
+162,"Rodriguez, Hall and Perez",Filippine
+163,"Adams, Black and Robinson",Canada
+164,Peters-Lambert,Australia
+165,Alexander LLC,Marocco
+166,Gonzalez and Sons,Afghanistan
+167,Armstrong Group,Afghanistan
+168,"Martin, Paul and Gallegos",Italia
+169,"Underwood, Salinas and Dillon",Australia
+170,Carlson and Sons,Filippine
+171,Phelps LLC,Australia
+172,Lopez LLC,Afghanistan
+173,"Woods, Campbell and Pollard",Filippine
+174,Carney-Davila,Canada
+175,Palmer-Bennett,Marocco
+176,Hill PLC,Canada
+177,"Turner, Bailey and Burns",Italia
+178,"Aguilar, Peters and Kline",Afghanistan
+179,"Turner, Harper and Odonnell",Marocco
+180,Morse-Ward,Australia
+181,Scott-Wilson,Italia
+182,"Hogan, Anderson and Edwards",Afghanistan
+183,Levine Group,Canada
+184,Vasquez LLC,Australia
+185,"Smith, Wagner and Reed",Filippine
+186,Clarke-Ashley,Filippine
+187,Rose-Rose,Italia
+188,"Randall, Pena and Jacobs",Australia
+189,Hernandez PLC,Afghanistan
+190,Snow LLC,Filippine
+191,Murphy-Roberts,Filippine
+192,"Price, Moore and Lyons",Marocco
+193,Banks Ltd,Australia
+194,Smith and Sons,Canada
+195,Williams-Contreras,Afghanistan
+196,Craig-James,Australia
+197,"Peterson, King and Lane",Australia
+198,Snyder Inc,Filippine
+199,"Palmer, Nolan and Mccann",Afghanistan
+200,Parker Group,Italia
+201,"Dennis, Harmon and Bruce",Canada
+202,Johnson LLC,Filippine
+203,Kaufman-Meyer,Afghanistan
+204,Martinez-Mcpherson,Filippine
+205,"Hanson, Pruitt and Mason",Marocco
+206,Long-Hernandez,Australia
+207,Fletcher Inc,Marocco
+208,"Weber, Lopez and Carrillo",Italia
+209,"Newman, Walter and Mckenzie",Marocco
+210,"Kim, Rodriguez and White",Italia
+211,"Hernandez, Chase and Gay",Canada
+212,"Bennett, Jones and Larsen",Filippine
+213,Young-Schroeder,Italia
+214,Johnson-Franco,Italia
+215,Smith PLC,Marocco
+216,Wright-Rhodes,Filippine
+217,"Pennington, Booker and Mcknight",Canada
+218,Brown-Thomas,Australia
+219,Davis Inc,Marocco
+220,"Evans, Lewis and Anderson",Afghanistan
+221,"Thompson, Moore and Cruz",Canada
+222,Haas Inc,Marocco
+223,"Fleming, Aguilar and Watson",Australia
+224,"Coleman, Carter and Davis",Afghanistan
+225,Terry-Murray,Marocco
+226,"Lopez, Mullen and Anderson",Canada
+227,Moreno-Bass,Italia
+228,"Cox, Garcia and Miller",Canada
+229,"Lynch, Nunez and Roberts",Italia
+230,"Miller, Cain and Baker",Marocco
+231,Hardy Group,Italia
+232,"Miller, Carter and Watson",Afghanistan
+233,"Charles, Wilson and Moreno",Filippine
+234,"Miller, Sandoval and Woods",Australia
+235,"Martinez, Alexander and Carter",Australia
+236,"Giles, Adams and Payne",Afghanistan
+237,"Webb, Fields and Clarke",Marocco
+238,"Oneill, Howard and White",Marocco
+239,Hines-Gomez,Filippine
+240,Lozano and Sons,Italia
+241,"Malone, Bryant and Allen",Filippine
+242,"Novak, Robinson and Roberts",Canada
+243,"Gonzalez, Kennedy and Stanley",Filippine
+244,Koch and Sons,Filippine
+245,Reed LLC,Marocco
+246,Richardson LLC,Australia
+247,"Martin, Valenzuela and Cooper",Afghanistan
+248,"Roberts, Hansen and Carter",Afghanistan
+249,"Cannon, Olson and Williams",Australia
+250,Lee-Martinez,Filippine
