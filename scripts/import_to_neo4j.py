@@ -24,7 +24,7 @@ def setup_database(graph):
 
 # Importazione dei dati
 for percentage, graph in graphs.items():
-    # if percentage >= 50 : exit("Caricati i dataset al 25%")
+    # if percentage >= 50 : exit("Caricati i dataset al 25%") #per prova 
     setup_database(graph)  # Configura il database se necessario
     for category in data_categories:
         csv_path = os.path.join(absolute_path, f'dataset/{percentage}%', f'dataset_{category}{percentage}%.csv')
