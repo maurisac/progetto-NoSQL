@@ -44,7 +44,7 @@ queries = [
     """,
     """
     for $t in //Transaction
-    let $b := //Bank[bank_id = $t/receiver_bank_id and (country = 'CountryA' or country = 'CountryB' or country = 'CountryC')]
+    let $b := //Bank[bank_id = $t/receiver_bank_id and (country = 'Afghanistan' or country = 'Filippine' or country = 'Marocco')]
     where $b
     let $u := //User[card_id = $t/sender_card_id]
     return <result>
@@ -52,6 +52,20 @@ queries = [
       <Bank>{data($b/name)}</Bank>
       <Amount>{data($t/amount)}</Amount>
       <Time>{data($t/timestamp)}</Time>
+    </result>
+    """,
+    """
+    for $u in //User
+    let $t1 := //Transaction[sender_card_id = $u/card_id]
+    let $t2 := //Transaction[sender_card_id = $u/card_id and receiver_bank_id = $t1/receiver_bank_id and $t1/timestamp < $t2/timestamp and $t2/timestamp < $t1/timestamp + xs:dayTimeDuration('PT10M')]
+    let $b := //Bank[bank_id = $t1/receiver_bank_id]
+    return <result>
+      <User>{data($u/name)}</User>
+      <Bank>{data($b/name)}</Bank>
+      <Amount1>{data($t1/amount)}</Amount1>
+      <Amount2>{data($t2/amount)}</Amount2>
+      <Time1>{data($t1/timestamp)}</Time1>
+      <Time2>{data($t2/timestamp)}</Time2>
     </result>
     """,
     """

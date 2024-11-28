@@ -14,7 +14,7 @@ color_neo4j = 'green'
 
 # Definisci le dimensioni del dataset e le query
 dataset_sizes = ['25%', '50%', '75%', '100%']
-queries = ['Query 1', 'Query 2', 'Query 3', 'Query 4']
+queries = ['Query 1', 'Query 2', 'Query 3', 'Query 4', 'Query 5']
 
 def extract_confidence_values(confidence_interval_str):
     matches = re.findall(r'\d+\.\d+', confidence_interval_str)

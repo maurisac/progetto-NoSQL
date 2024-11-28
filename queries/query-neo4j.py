@@ -34,8 +34,14 @@ queries = [
     """,
     """
     MATCH (u:Users)-[:MADE]->(t:Transactions)-[:RECEIVED_BY]->(b:Banks)
-    WHERE b.country IN ["CountryA", "CountryB", "CountryC"]
+    WHERE b.country IN ["Afghanistan", "Filippine", "Marocco"]
     RETURN u.name AS User, b.name AS Bank, t.amount AS Amount, t.timestamp AS Time
+    """,
+    """
+    MATCH (u:Users)-[:MADE]->(t1:Transactions)-[:RECEIVED_BY]->(b:Banks)
+    MATCH (u)-[:MADE]->(t2:Transactions)-[:RECEIVED_BY]->(b)
+    WHERE t1.timestamp < t2.timestamp AND t2.timestamp < t1.timestamp + duration({minutes: 10})
+    RETURN u.name AS User, b.name AS Bank, t1.amount AS Amount1, t2.amount AS Amount2, t1.timestamp AS Time1, t2.timestamp AS Time2
     """,
     """
     MATCH path = (u1:Users)-[:MADE]->(t1:Transactions)-[:RECEIVED_BY]->(b1:Banks)-[:RECEIVED_BY]->(t2:Transactions)<-[:MADE]-(u2:Users)-[:MADE]->(t3:Transactions)-[:RECEIVED_BY]->(b2:Banks)
@@ -103,6 +109,7 @@ with open(csv_file_first, 'w', newline='', encoding='utf-8') as csvfile:
 
     for data in first_exec_times:
         writer.writerow(data)
+
 
 # Salva i risultati delle 30 esecuzioni medie
 csv_file_avg = "G:/ROBA DI MAURIZIO/UNIVERSITA'/basi 2/progetto-DB2-Saccà/results/query_result_avgexec_Neo4j.csv"
