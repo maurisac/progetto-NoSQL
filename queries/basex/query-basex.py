@@ -4,7 +4,7 @@ import requests
 import numpy as np
 from scipy.stats import t
 
-percentages = [25]
+percentages = [25, 50, 75, 100]
 
 def calculate_confidence_interval(data):
     data = np.array(data[1:])  # Ignora il primo tempo (prima esecuzione)
@@ -90,10 +90,10 @@ for percentage in percentages:
         for _ in range(31):
             start = time.time()
             response = requests.post(
-                f"http://localhost:8984/rest/{db_name}",
+                f"http://localhost:8080/rest/{db_name}",
                 data=query,
                 headers={'Content-Type': 'application/query+xml'},
-                auth=('admin', 'admin')
+                auth=('admin', '0')
             )
             end = time.time()
             total_time = (end - start) * 1000
@@ -128,7 +128,7 @@ for percentage in percentages:
         print("-" * 40)
 
 # Salva i risultati della prima esecuzione
-csv_file_first = "G:/ROBA DI MAURIZIO/UNIVERSITA'/basi 2/progetto-DB2-Saccà/results/tempi_di_risposta_prima_esecuzione_basex.csv"
+csv_file_first = "G:/ROBA DI MAURIZIO/UNIVERSITA'/basi 2/progetto-DB2-Saccà/results/query_result_1stexec_BaseX.csv"
 with open(csv_file_first, 'w', newline='', encoding='utf-8') as csvfile:
     fieldnames = ['Dataset', 'Query', 'Millisecondi']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -138,7 +138,7 @@ with open(csv_file_first, 'w', newline='', encoding='utf-8') as csvfile:
         writer.writerow(data)
 
 # Salva i risultati delle 30 esecuzioni medie
-csv_file_avg = "G:/ROBA DI MAURIZIO/UNIVERSITA'/basi 2/progetto-DB2-Saccà/results/tempi_di_risposta_media_30_basex.csv"
+csv_file_avg = "G:/ROBA DI MAURIZIO/UNIVERSITA'/basi 2/progetto-DB2-Saccà/results/query_result_avgexec_BaseX.csv"
 with open(csv_file_avg, 'w', newline='', encoding='utf-8') as csvfile:
     fieldnames = ['Dataset', 'Query', 'Millisecondi', 'Media', 'Intervallo di Confidenza (Min, Max)']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)

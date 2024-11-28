@@ -4,7 +4,7 @@ import csv
 from scipy.stats import t
 import numpy as np
 
-percentages = [25]
+percentages = [25, 50, 75, 100]
 
 def calculate_confidence_interval(data):
     data = np.array(data[1:])  # Ignora il primo tempo (prima esecuzione)
