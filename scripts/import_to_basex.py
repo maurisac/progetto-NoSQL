@@ -3,8 +3,10 @@ import xml.etree.ElementTree as ET
 import requests
 import os
 
-def convert_row_to_xml(row, root_element):
+def convert_row_to_xml(row, root_element, id_field=None):
     element = ET.Element(root_element)
+    if id_field:
+        element.set('ID', row[id_field])
     for col, val in row.items():
         child = ET.SubElement(element, col)
         child.text = str(val)
@@ -20,28 +22,33 @@ def upload_xml_to_basex(xml_content, db_name):
         print(f"Failed to upload XML file to {db_name}: {response.status_code} {response.text}")
 
 def create_and_upload_datasets(root_directory):
-    percentages = ['100%', '75%', '50%', '25%']
+    percentages = ['25%', '50%', '75%', '100%']
     data_types = ['users', 'banks', 'transactions']
     xml_root_elements = {
         'users': 'User',
         'banks': 'Bank',
         'transactions': 'Transaction'
     }
+    id_fields = {
+        'users': 'user_id',
+        'banks': 'bank_id',
+        'transactions': 'transaction_id'
+    }
 
     for percentage in percentages:
         root = ET.Element('Data')
-        relations_root = ET.Element('Relations')
 
         for data_type in data_types:
             csv_file = f'dataset_{data_type}{percentage}.csv'
             xml_root_element = xml_root_elements[data_type]
+            id_field = id_fields[data_type]
             csv_path = os.path.join(root_directory, percentage, csv_file)
 
             if os.path.exists(csv_path):
                 with open(csv_path, 'r', newline='', encoding='utf-8') as csvfile:
                     reader = csv.DictReader(csvfile)
                     for row in reader:
-                        xml_data = convert_row_to_xml(row, xml_root_element)
+                        xml_data = convert_row_to_xml(row, xml_root_element, id_field)
                         root.append(xml_data)
 
                         # Aggiungi relazioni qui
@@ -50,15 +57,10 @@ def create_and_upload_datasets(root_directory):
                             bank_id = row['receiver_bank_id']
                             transaction_id = row['transaction_id']
 
-                            user_relation = ET.Element('UserTransaction')
-                            user_relation.set('sender_card_id', user_id)
-                            user_relation.set('transaction_id', transaction_id)
-                            relations_root.append(user_relation)
-
-                            bank_relation = ET.Element('BankTransaction')
-                            bank_relation.set('receiver_bank_id', bank_id)
-                            bank_relation.set('transaction_id', transaction_id)
-                            relations_root.append(bank_relation)
+                            transaction_element = root.find(f".//Transaction[@ID='{transaction_id}']")
+                            if transaction_element is not None:
+                                transaction_element.set('user_ref', user_id)
+                                transaction_element.set('bank_ref', bank_id)
 
             else:
                 print(f"File not found: {csv_path}")
@@ -67,11 +69,6 @@ def create_and_upload_datasets(root_directory):
         tree = ET.ElementTree(root)
         xml_content = ET.tostring(tree.getroot(), encoding='utf-8', method='xml')
         upload_xml_to_basex(xml_content, f"dataset_{percentage}")
-
-        # Carica le relazioni
-        relations_tree = ET.ElementTree(relations_root)
-        relations_xml_content = ET.tostring(relations_tree.getroot(), encoding='utf-8', method='xml')
-        upload_xml_to_basex(relations_xml_content, f"relations_{percentage}")
 
 # Example usage
 root_directory = "G:/ROBA DI MAURIZIO/UNIVERSITA'/basi 2/progetto-DB2-Saccà/dataset"
