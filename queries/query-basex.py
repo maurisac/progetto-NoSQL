@@ -47,7 +47,7 @@ def write_query_time(query_id, query_description, time_taken):
         f.write(f"Query ID: {query_id}, Query Description: {query_description}, Time Taken: {time_taken:.4f} ms\n")
 
 def automate_queries():
-    percentages = [25]#, 50, 75, 100]
+    percentages = [25, 50, 75, 100]
     queries = [
         # Query 1: Transazioni con importo superiore a 50000
         (1, """
@@ -74,51 +74,33 @@ def automate_queries():
           <Amount>{data($t/amount)}</Amount>
           <Time>{data($t/timestamp)}</Time>
         </result>
-        """, "Tutti gli utenti appartenenti alle banche in paesi ad alto rischio")
-        # ,
+        """, "Tutti gli utenti appartenenti alle banche in paesi ad alto rischio"),
 
-        # # Query 3: Utenti che effettuano transazioni multiple verso banche in paesi diversi e il totale è sopra i 30000
-        # (3, """
-        # for $u in //User
-        # let $t1 := //Transaction[sender_card_id = $u/card_id]
-        # let $b1 := //Bank[bank_id = $t1/receiver_bank_id]
-        # for $t2 in //Transaction[sender_card_id = $u/card_id and receiver_bank_id != $t1/receiver_bank_id]
-        # let $b2 := //Bank[bank_id = $t2/receiver_bank_id]
-        # where number($t1/amount) + number($t2/amount) > 30000
-        # return <result>
-        #   <User>{data($u/name)}</User>
-        #   <Bank1>{data($b1/name)}</Bank1>
-        #   <Country1>{data($b1/country)}</Country1>
-        #   <Amount1>{data($t1/amount)}</Amount1>
-        #   <Time1>{data($t1/timestamp)}</Time1>
-        #   <Bank2>{data($b2/name)}</Bank2>
-        #   <Country2>{data($b2/country)}</Country2>
-        #   <Amount2>{data($t2/amount)}</Amount2>
-        #   <Time2>{data($t2/timestamp)}</Time2>
-        # </result>
-        # """, "Utenti che effettuano transazioni multiple verso banche in paesi diversi e il totale è sopra i 30000"),
+        # Query 3: Utenti che effettuano transazioni sopra 2000 verso banche diverse in paesi diversi
+        (3, """
+        for $u in //User
+        let $transactions := //Transaction[sender_card_id = $u/card_id and amount > 5000]
+        let $countries := distinct-values(//Bank[bank_id = $transactions/receiver_bank_id]/country)
+        where count($countries) > 1
+        return <result>
+          <User>{data($u/name)}</User>
+          <Countries>{for $c in $countries return <Country>{data($c)}</Country>}</Countries>
+          <TotalTransactions>{count($transactions)}</TotalTransactions>
+        </result>
+        """, "Utenti che effettuano transazioni sopra 2000 verso banche diverse in paesi diversi"),
 
-        # # Query 4: Utenti che inoltrano soldi tra banche in paesi ad alto rischio
-        # (4, """
-        # for $t1 in //Transaction
-        # let $u1 := //User[card_id = $t1/sender_card_id]
-        # let $b1 := //Bank[bank_id = $t1/receiver_bank_id and (country = 'Afghanistan' or country = 'Filippine' or country = 'Marocco')]
-        # where $b1
-        # for $t2 in //Transaction[sender_card_id = $u1/card_id and receiver_bank_id = $b1/bank_id and number(amount) <= number($t1/amount) and $t2/timestamp > $t1/timestamp]
-        # let $u2 := //User[card_id = $t2/sender_card_id]
-        # let $b2 := //Bank[bank_id = $t2/receiver_bank_id and (country = 'Afghanistan' or country = 'Filippine' or country = 'Marocco')]
-        # where $b2 and number($t1/amount) + number($t2/amount) >= 30000
-        # return <result>
-        #   <User1>{data($u1/name)}</User1>
-        #   <Bank1>{data($b1/name)}</Bank1>
-        #   <Amount1>{data($t1/amount)}</Amount1>
-        #   <Time1>{data($t1/timestamp)}</Time1>
-        #   <User2>{data($u2/name)}</User2>
-        #   <Bank2>{data($b2/name)}</Bank2>
-        #   <Amount2>{data($t2/amount)}</Amount2>
-        #   <Time2>{data($t2/timestamp)}</Time2>
-        # </result>
-        # """, "Utenti che inoltrano soldi tra banche in paesi ad alto rischio")
+        # Query 4: Tante piccole transazioni da parte di più di 10 utenti che vengono eseguite nello stesso minuto
+        (4, """
+        for $minute in distinct-values(//Transaction/timestamp)
+        let $transactions := //Transaction[timestamp = $minute and amount < 5000]
+        let $users := distinct-values($transactions/sender_card_id)
+        where count($users) > 10
+        return <result>
+          <Minute>{data($minute)}</Minute>
+          <Users>{for $u in $users return <User>{data($u)}</User>}</Users>
+          <TotalTransactions>{count($transactions)}</TotalTransactions>
+        </result>
+        """, "Tante piccole transazioni da parte di più di 10 utenti che vengono eseguite nello stesso minuto")
     ]
 
     first_exec_times = []
