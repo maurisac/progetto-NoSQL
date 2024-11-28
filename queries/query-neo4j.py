@@ -21,37 +21,43 @@ def calculate_confidence_interval(data):
     return avg_exec_time, confidence_interval
 
 queries = [
+
+
+    # Query 1: Transazioni con importo superiore a 50000
     """
-    MATCH (u:Users)-[:MADE]->(t:Transactions)-[:RECEIVED_BY]->(b:Banks)
-    WHERE t.amount > 10000
+    MATCH (u:Users)-[:PERFORMED]->(t:Transactions)-[:TO_BANK]->(b:Banks)
+    WHERE t.amount > 50000
     RETURN u.name AS User, b.name AS Bank, t.amount AS Amount, t.timestamp AS Time
     """,
+
+    # Query 2: Tutti gli utenti appartenenti alle banche in paesi ad alto rischio
     """
-    MATCH (u:Users)-[:MADE]->(t:Transactions)
-    WITH u, COUNT(t) AS numTransazioni
-    WHERE numTransazioni > 50
-    RETURN u.name AS User, numTransazioni AS Transazioni
-    """,
-    """
-    MATCH (u:Users)-[:MADE]->(t:Transactions)-[:RECEIVED_BY]->(b:Banks)
+    MATCH (u:Users)-[:PERFORMED]->(t:Transactions)-[:TO_BANK]->(b:Banks)
     WHERE b.country IN ["Afghanistan", "Filippine", "Marocco"]
     RETURN u.name AS User, b.name AS Bank, t.amount AS Amount, t.timestamp AS Time
     """,
-    """
-    MATCH (u:Users)-[:MADE]->(t1:Transactions)-[:RECEIVED_BY]->(b:Banks)
-    MATCH (u)-[:MADE]->(t2:Transactions)-[:RECEIVED_BY]->(b)
-    WHERE t1.timestamp < t2.timestamp AND t2.timestamp < t1.timestamp + duration({minutes: 10})
-    RETURN u.name AS User, b.name AS Bank, t1.amount AS Amount1, t2.amount AS Amount2, t1.timestamp AS Time1, t2.timestamp AS Time2
-    """,
-    """
-    MATCH path = (u1:Users)-[:MADE]->(t1:Transactions)-[:RECEIVED_BY]->(b1:Banks)-[:RECEIVED_BY]->(t2:Transactions)<-[:MADE]-(u2:Users)-[:MADE]->(t3:Transactions)-[:RECEIVED_BY]->(b2:Banks)
-    WHERE u1 = u2
-    RETURN path
-    """
-]
 
+    # Query 3: Utenti che effettuano transazioni multiple verso banche in paesi diversi e il totale è sopra i 30000
+    """
+    MATCH (u:Users)-[:PERFORMED]->(t1:Transactions)-[:TO_BANK]->(b1:Banks)
+    MATCH (u)-[:PERFORMED]->(t2:Transactions)-[:TO_BANK]->(b2:Banks)
+    WHERE b1.country <> b2.country AND t1.amount + t2.amount > 15000
+    RETURN u.name AS User, b1.name AS Bank1, b1.country AS Country1, t1.amount AS Amount1, t1.timestamp AS Time1, b2.name AS Bank2, b2.country AS Country2, t2.amount AS Amount2, t2.timestamp AS Time2
+    """,
+
+    # Query 4: Utenti che inoltrano soldi tra banche in paesi ad alto rischio
+    """
+    MATCH (u1:Users)-[:PERFORMED]->(t1:Transactions)-[:TO_BANK]->(b1:Banks)
+    WHERE b1.country IN ["Afghanistan", "Filippine", "Marocco"]
+    MATCH (u2:Users)-[:PERFORMED]->(t2:Transactions)-[:TO_BANK]->(b2:Banks)
+    WHERE b2.country IN ["Afghanistan", "Filippine", "Marocco"] AND t2.amount <= t1.amount AND t1.amount <= 30000 AND t2.timestamp > t1.timestamp and t2.amount + t1.amount >= 30000
+    RETURN u1.name AS User1, b1.name AS Bank1, t1.amount AS Amount1, t1.timestamp AS Time1, u2.name AS User2, b2.name AS Bank2, t2.amount AS Amount2, t2.timestamp AS Time2
+    """
+
+]    
 first_exec_times = []
 avg_exec_times = []
+query_results = []
 
 for percentage in percentages:
     print(f"Dimensioni dataset: {percentage}%")
@@ -74,7 +80,14 @@ for percentage in percentages:
             if _ == 0:
                 first_exec_time = total_time
 
-            print(f"Risultati query {query_num + 1}:\n{result}")
+            if _ == 0:  # Salva l'output della prima esecuzione
+                query_results.append({
+                    "Dataset": f'{percentage}%',
+                    "Query": f"Query {query_num + 1}",
+                    "Result": result
+                })
+
+            # print(f"Risultati query {query_num + 1}:\n{result}")
 
         avg_exec_time, confidence_interval = calculate_confidence_interval(exec_times_query)
 
@@ -119,4 +132,14 @@ with open(csv_file_avg, 'w', newline='', encoding='utf-8') as csvfile:
     writer.writeheader()
 
     for data in avg_exec_times:
+        writer.writerow(data)
+
+# Salva l'output delle query
+csv_file_results = "G:/ROBA DI MAURIZIO/UNIVERSITA'/basi 2/progetto-DB2-Saccà/results/query_results_Neo4j.csv"
+with open(csv_file_results, 'w', newline='', encoding='utf-8') as csvfile:
+    fieldnames = ['Dataset', 'Query', 'Result']
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    writer.writeheader()
+
+    for data in query_results:
         writer.writerow(data)

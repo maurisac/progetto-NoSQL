@@ -21,8 +21,10 @@ def calculate_confidence_interval(data):
     return avg_exec_time, confidence_interval
 
 queries = [
+    
+    # Query 1: Transazioni con importo superiore a 50000
     """
-    for $t in //Transaction[number(amount) > 10000]
+    for $t in //Transaction[number(amount) > 50000]
     let $u := //User[card_id = $t/sender_card_id]
     let $b := //Bank[bank_id = $t/receiver_bank_id]
     return <result>
@@ -32,16 +34,8 @@ queries = [
       <Time>{data($t/timestamp)}</Time>
     </result>
     """,
-    """
-    for $u in //User
-    let $transactions := //Transaction[sender_card_id = $u/card_id]
-    let $numTransazioni := count($transactions)
-    where $numTransazioni > 50
-    return <result>
-      <User>{data($u/name)}</User>
-      <Transazioni>{$numTransazioni}</Transazioni>
-    </result>
-    """,
+
+    # Query 2: Tutti gli utenti appartenenti alle banche in paesi ad alto rischio
     """
     for $t in //Transaction
     let $b := //Bank[bank_id = $t/receiver_bank_id and (country = 'Afghanistan' or country = 'Filippine' or country = 'Marocco')]
@@ -54,42 +48,55 @@ queries = [
       <Time>{data($t/timestamp)}</Time>
     </result>
     """,
+
+    # Query 3: Utenti che effettuano transazioni multiple verso banche in paesi diversi e il totale è sopra i 30000
+
     """
     for $u in //User
     let $t1 := //Transaction[sender_card_id = $u/card_id]
-    let $t2 := //Transaction[sender_card_id = $u/card_id and receiver_bank_id = $t1/receiver_bank_id and $t1/timestamp < $t2/timestamp and $t2/timestamp < $t1/timestamp + xs:dayTimeDuration('PT10M')]
-    let $b := //Bank[bank_id = $t1/receiver_bank_id]
+    let $b1 := //Bank[bank_id = $t1/receiver_bank_id]
+    for $t2 in //Transaction[sender_card_id = $u/card_id and receiver_bank_id != $t1/receiver_bank_id]
+    let $b2 := //Bank[bank_id = $t2/receiver_bank_id]
+    where number($t1/amount) + number($t2/amount) > 15000
     return <result>
       <User>{data($u/name)}</User>
-      <Bank>{data($b/name)}</Bank>
+      <Bank1>{data($b1/name)}</Bank1>
+      <Country1>{data($b1/country)}</Country1>
       <Amount1>{data($t1/amount)}</Amount1>
-      <Amount2>{data($t2/amount)}</Amount2>
       <Time1>{data($t1/timestamp)}</Time1>
+      <Bank2>{data($b2/name)}</Bank2>
+      <Country2>{data($b2/country)}</Country2>
+      <Amount2>{data($t2/amount)}</Amount2>
       <Time2>{data($t2/timestamp)}</Time2>
     </result>
     """,
+
+    # Query 4: Utenti che inoltrano soldi tra banche in paesi ad alto rischio
     """
-    for $u1 in //User
-    let $t1 := //Transaction[sender_card_id = $u1/card_id]
-    let $b1 := //Bank[bank_id = $t1/receiver_bank_id]
-    let $t2 := //Transaction[receiver_bank_id = $b1/bank_id]
+    for $t1 in //Transaction
+    let $u1 := //User[card_id = $t1/sender_card_id]
+    let $b1 := //Bank[bank_id = $t1/receiver_bank_id and (country = 'Afghanistan' or country = 'Filippine' or country = 'Marocco')]
+    where $b1
+    for $t2 in //Transaction[sender_card_id = $u1/card_id and receiver_bank_id = $b1/bank_id and number(amount) <= number($t1/amount) and $t2/timestamp > $t1/timestamp]
     let $u2 := //User[card_id = $t2/sender_card_id]
-    let $t3 := //Transaction[sender_card_id = $u2/card_id and receiver_bank_id = $b1/bank_id]
-    where $u1 = $u2
-    return <path>
+    let $b2 := //Bank[bank_id = $t2/receiver_bank_id and (country = 'Afghanistan' or country = 'Filippine' or country = 'Marocco')]
+    where $b2 and number($t1/amount) + number($t2/amount) >= 30000
+    return <result>
       <User1>{data($u1/name)}</User1>
-      <Transaction1>{data($t1/amount)}</Transaction1>
       <Bank1>{data($b1/name)}</Bank1>
-      <Transaction2>{data($t2/amount)}</Transaction2>
+      <Amount1>{data($t1/amount)}</Amount1>
+      <Time1>{data($t1/timestamp)}</Time1>
       <User2>{data($u2/name)}</User2>
-      <Transaction3>{data($t3/amount)}</Transaction3>
-      <Bank2>{data($b1/name)}</Bank2>
-    </path>
+      <Bank2>{data($b2/name)}</Bank2>
+      <Amount2>{data($t2/amount)}</Amount2>
+      <Time2>{data($t2/timestamp)}</Time2>
+    </result>
     """
 ]
 
 first_exec_times = []
 avg_exec_times = []
+query_results = []
 
 for percentage in percentages:
     print(f"Dimensioni dataset: {percentage}%")
@@ -116,8 +123,15 @@ for percentage in percentages:
             if _ == 0:
                 first_exec_time = total_time
 
+            if _ == 0:  # Salva l'output della prima esecuzione
+                query_results.append({
+                    "Dataset": f'{percentage}%',
+                    "Query": f"Query {query_num + 1}",
+                    "Result": response.text
+                })
+
             result = response.text
-            print(f"Risultati query {query_num + 1}:\n{result}")
+            # print(f"Risultati query {query_num + 1}:\n{result}")
 
         avg_exec_time, confidence_interval = calculate_confidence_interval(exec_times_query)
 
@@ -160,3 +174,56 @@ with open(csv_file_avg, 'w', newline='', encoding='utf-8') as csvfile:
 
     for data in avg_exec_times:
         writer.writerow(data)
+
+# Salva l'output delle query
+csv_file_results = "G:/ROBA DI MAURIZIO/UNIVERSITA'/basi 2/progetto-DB2-Saccà/results/query_results_BaseX.csv"
+with open(csv_file_results, 'w', newline='', encoding='utf-8') as csvfile:
+    fieldnames = ['Dataset', 'Query', 'Result']
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    writer.writeheader()
+
+    for data in query_results:
+        writer.writerow(data)
+
+
+# import requests
+# import xml.etree.ElementTree as ET
+
+# def is_valid_xml(content):
+#     try:
+#         ET.fromstring(content)
+#         return True
+#     except ET.ParseError as e:
+#         print(f"Errore di parsing XML: {e}")
+#         return False
+
+# # Query di debug
+# query = """
+# for $t in //Transaction[number(amount) > 50000]
+# let $u := //User[card_id = $t/sender_card_id]
+# let $b := //Bank[bank_id = $t/receiver_bank_id]
+# return <result>
+#   <User>{data($u/name)}</User>
+#   <Bank>{data($b/name)}</Bank>
+#   <Amount>{data($t/amount)}</Amount>
+#   <Time>{data($t/timestamp)}</Time>
+# </result>
+# """
+
+# # Esegui la query
+# response = requests.post(
+#     "http://localhost:8080/rest/dataset_25",
+#     data=query,
+#     headers={'Content-Type': 'application/query+xml'},
+#     auth=('admin', '0')
+# )
+
+# # Controlla se il contenuto XML è valido
+# result = response.text
+# print("Contenuto XML restituito:")
+# print(result)
+
+# if is_valid_xml(result):
+#     print("Il contenuto XML è valido.")
+# else:
+#     print("Il contenuto XML non è valido.")

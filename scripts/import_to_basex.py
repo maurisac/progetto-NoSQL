@@ -1,7 +1,7 @@
+import os
 import csv
 import xml.etree.ElementTree as ET
 import requests
-import os
 
 def convert_row_to_xml(row, root_element, id_field=None):
     element = ET.Element(root_element)
@@ -22,7 +22,7 @@ def upload_xml_to_basex(xml_content, db_name):
         print(f"Failed to upload XML file to {db_name}: {response.status_code} {response.text}")
 
 def create_and_upload_datasets(root_directory):
-    percentages = ['25%', '50%', '75%', '100%']
+    percentages = ['25%']#, '50%', '75%', '100%']
     data_types = ['users', 'banks', 'transactions']
     xml_root_elements = {
         'users': 'User',
@@ -65,11 +65,11 @@ def create_and_upload_datasets(root_directory):
             else:
                 print(f"File not found: {csv_path}")
 
-        # Carica i dati
-        tree = ET.ElementTree(root)
-        xml_content = ET.tostring(tree.getroot(), encoding='utf-8', method='xml')
+        # Aggiungi la dichiarazione XML
+        xml_declaration = '<?xml version="1.0" encoding="UTF-8"?>'
+        xml_content = xml_declaration + ET.tostring(root, encoding='unicode', method='xml')
+
+        # Carica il contenuto XML su BaseX
         upload_xml_to_basex(xml_content, f"dataset_{percentage}")
 
-# Example usage
-root_directory = "G:/ROBA DI MAURIZIO/UNIVERSITA'/basi 2/progetto-DB2-Saccà/dataset"
-create_and_upload_datasets(root_directory)
+create_and_upload_datasets("G:/ROBA DI MAURIZIO/UNIVERSITA'/basi 2/progetto-DB2-Saccà/dataset")
