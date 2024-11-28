@@ -34,9 +34,9 @@ for percentage, graph in graphs.items():
             node = Node(category.capitalize(), **row.to_dict())
             graph.merge(node, category.capitalize(), f'{category[:-1]}_id')
 
-            # Se è una transazione, potresti voler collegarla a utenti o banche
+            # Se è una transazione si collega a utenti e banche
             if category == 'transactions':
-            # Cerca la corrispondenza della carta con un utente
+            # Cerca la corrispondenza di carta-utente e banca
                 card_node = graph.nodes.match("Users", card_id=row['sender_card_id']).first()
                 bank_node = graph.nodes.match("Banks", bank_id=row['receiver_bank_id']).first()
                 if card_node and bank_node:
