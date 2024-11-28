@@ -4,7 +4,7 @@ import csv
 from scipy.stats import t
 import numpy as np
 
-percentages = [25]#, 50, 75, 100]
+percentages = [25, 50, 75, 100]
 
 def calculate_confidence_interval(data):
     data = np.array(data[1:])  # Ignora il primo tempo (prima esecuzione)
@@ -27,14 +27,8 @@ queries = [
     RETURN t
     """,
 
-    # Query 2: Tutti gli utenti appartenenti alle banche in paesi ad alto rischio
-    """
-    MATCH (u:Users)-[:PERFORMED]->(t:Transactions)-[:TO_BANK]->(b:Banks)
-    WHERE b.country IN ["Afghanistan", "Filippine", "Marocco"]
-    RETURN u.name AS User, b.name AS Bank, t.amount AS Amount, t.timestamp AS Time
-    """,
 
-    # Query 3: Utenti che effettuano transazioni in paesi diversi
+    # Query 2: Utenti che effettuano transazioni in paesi diversi
     """
     MATCH (u:Users)-[:PERFORMED]->(t:Transactions)-[:TO_BANK]->(b:Banks)
     WHERE t.amount > 5000
@@ -44,7 +38,7 @@ queries = [
     """,
 
 
-    # Query 4: Tante piccole transazioni da parte di più di 30 utenti che vengono eseguite nello stesso minuto
+    # Query 3: Tante piccole transazioni da parte di più di 30 utenti che vengono eseguite nello stesso minuto
     """
     MATCH (t:Transactions)
     WITH t, split(t.timestamp, " ")[0] + " " + substring(split(t.timestamp, " ")[1], 0, 5) AS minute
@@ -53,6 +47,12 @@ queries = [
     WHERE numUsers > 10
     RETURN minute AS Minute, numUsers AS Users, SIZE(transactions) AS TotalTransactions
     """
+    # Query 4: Tutti gli utenti appartenenti alle banche in paesi ad alto rischio
+    """
+    MATCH (u:Users)-[:PERFORMED]->(t:Transactions)-[:TO_BANK]->(b:Banks)
+    WHERE b.country IN ["Afghanistan", "Filippine", "Marocco"]
+    RETURN u.name AS User, b.name AS Bank, t.amount AS Amount, t.timestamp AS Time
+    """,
 ]
 
 def automate_queries():

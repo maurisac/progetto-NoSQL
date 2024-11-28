@@ -22,7 +22,7 @@ def upload_xml_to_basex(xml_content, db_name):
         print(f"Failed to upload XML file to {db_name}: {response.status_code} {response.text}")
 
 def create_and_upload_datasets(root_directory):
-    percentages = ['25%']#, '50%', '75%', '100%']
+    percentages = ['25%', '50%', '75%', '100%']
     data_types = ['users', 'banks', 'transactions']
     xml_root_elements = {
         'users': 'User',

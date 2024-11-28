@@ -62,22 +62,9 @@ def automate_queries():
         </result>
         """, "Transazioni con importo superiore a 50000"),
 
-        # Query 2: Tutti gli utenti appartenenti alle banche in paesi ad alto rischio
-        (2, """
-        for $t in //Transaction
-        let $b := //Bank[bank_id = $t/receiver_bank_id and (country = 'Afghanistan' or country = 'Filippine' or country = 'Marocco')]
-        where $b
-        let $u := //User[card_id = $t/sender_card_id]
-        return <result>
-          <User>{data($u/name)}</User>
-          <Bank>{data($b/name)}</Bank>
-          <Amount>{data($t/amount)}</Amount>
-          <Time>{data($t/timestamp)}</Time>
-        </result>
-        """, "Tutti gli utenti appartenenti alle banche in paesi ad alto rischio"),
 
-        # Query 3: Utenti che effettuano transazioni sopra 2000 verso banche diverse in paesi diversi
-        (3, """
+        # Query 2: Utenti che effettuano transazioni sopra 2000 verso banche diverse in paesi diversi
+        (2, """
         for $u in //User
         let $transactions := //Transaction[sender_card_id = $u/card_id and amount > 5000]
         let $countries := distinct-values(//Bank[bank_id = $transactions/receiver_bank_id]/country)
@@ -89,8 +76,8 @@ def automate_queries():
         </result>
         """, "Utenti che effettuano transazioni sopra 2000 verso banche diverse in paesi diversi"),
 
-        # Query 4: Tante piccole transazioni da parte di più di 10 utenti che vengono eseguite nello stesso minuto
-        (4, """
+        # Query 3: Tante piccole transazioni da parte di più di 10 utenti che vengono eseguite nello stesso minuto
+        (3, """
         for $minute in distinct-values(//Transaction/timestamp)
         let $transactions := //Transaction[timestamp = $minute and amount < 5000]
         let $users := distinct-values($transactions/sender_card_id)
@@ -100,7 +87,21 @@ def automate_queries():
           <Users>{for $u in $users return <User>{data($u)}</User>}</Users>
           <TotalTransactions>{count($transactions)}</TotalTransactions>
         </result>
-        """, "Tante piccole transazioni da parte di più di 10 utenti che vengono eseguite nello stesso minuto")
+        """, "Tante piccole transazioni da parte di più di 10 utenti che vengono eseguite nello stesso minuto"),
+
+        # Query 4: Tutti gli utenti appartenenti alle banche in paesi ad alto rischio
+        (4, """
+        for $t in //Transaction
+        let $b := //Bank[bank_id = $t/receiver_bank_id and (country = 'Afghanistan' or country = 'Filippine' or country = 'Marocco')]
+        where $b
+        let $u := //User[card_id = $t/sender_card_id]
+        return <result>
+          <User>{data($u/name)}</User>
+          <Bank>{data($b/name)}</Bank>
+          <Amount>{data($t/amount)}</Amount>
+          <Time>{data($t/timestamp)}</Time>
+        </result>
+        """, "Tutti gli utenti appartenenti alle banche in paesi ad alto rischio")
     ]
 
     first_exec_times = []
